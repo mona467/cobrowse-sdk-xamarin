@@ -1,12 +1,26 @@
  version: 2.1
 
- orbs:
-  win: circleci/windows@2.2.0
-
  jobs:
    build:
-     executor: win/default     
+
+    macos:
+      xcode: "11.3"
     
      steps:
        - checkout
-       - run: dotnet build
+
+       - run:
+           name: Install Xamarin SDK
+           command: brew cask install xamarin-android xamarin-ios visual-studio
+           
+       - run:
+           name: Restore Nuget packages
+           command: /Library/Frameworks/Mono.framework/Versions/Current/Commands/nuget restore
+       
+       - run:
+           name: Build SwiftCBOR.iOS
+           command: /Library/Frameworks/Mono.framework/Versions/Current/Commands/msbuild /p:Configuration=Release /t:Build iOS/SwiftCBOR.iOS/SwiftCBOR.iOS.csproj
+
+       - store_artifacts:
+           path: iOS/SwiftCBOR.iOS/bin/Release/SwiftCBOR.iOS.dll
+           destination: SwiftCBOR.iOS.dll
