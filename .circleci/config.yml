@@ -1,25 +1,18 @@
 version: 2.1
 jobs:
   build:
-
     macos:
-      xcode: "11.3"
-    
+      xcode: "11.3.1"
     steps:
       - checkout
-
       - run:
-        name: Install Xamarin SDK
-        command: brew cask install xamarin-android xamarin-ios visual-studio
-           
+            name: Install Xamarin SDK
+            command: brew cask install xamarin-android xamarin-ios visual-studio
       - run:
-        name: Restore Nuget packages
-        command: /Library/Frameworks/Mono.framework/Versions/Current/Commands/nuget restore
-       
+            name: Restore Nuget packages
+            command: /Library/Frameworks/Mono.framework/Versions/Current/Commands/nuget restore
       - run:
-        name: Build SwiftCBOR.iOS
-        command: /Library/Frameworks/Mono.framework/Versions/Current/Commands/msbuild /p:Configuration=Release /t:Build iOS/SwiftCBOR.iOS/SwiftCBOR.iOS.csproj
-
+            name: Build SwiftCBOR.iOS
+            command: /Library/Frameworks/Mono.framework/Versions/Current/Commands/msbuild /p:Configuration=Release /t:Build iOS/SwiftCBOR.iOS/SwiftCBOR.iOS.csproj
       - store_artifacts:
-        path: iOS/SwiftCBOR.iOS/bin/Release/SwiftCBOR.iOS.dll
-        destination: SwiftCBOR.iOS.dll
+            path: iOS/SwiftCBOR.iOS/bin/Release/SwiftCBOR.iOS.dll
